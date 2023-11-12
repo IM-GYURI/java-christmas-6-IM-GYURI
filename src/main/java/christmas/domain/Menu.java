@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
-    public static void main(String[] args) {
+    public static List<MenuCategory> createMenu() {
+        List<MenuCategory> menu = new ArrayList<>();
+
         MenuCategory appetizerCategory = new MenuCategory("<애피타이저>");
         appetizerCategory.addItem("양송이수프", 6_000);
         appetizerCategory.addItem("타파스", 5_500);
@@ -25,18 +27,11 @@ public class Menu {
         beverageCategory.addItem("레드와인", 60_000);
         beverageCategory.addItem("샴페인", 25_000);
 
-        List<MenuCategory> menu = new ArrayList<>();
         menu.add(appetizerCategory);
         menu.add(mainCategory);
         menu.add(dessertCategory);
         menu.add(beverageCategory);
 
-        for (MenuCategory category : menu) {
-            System.out.println(category.getCategoryName());
-            for (MenuItem item : category.getItems()) {
-                System.out.println(item.getName() + "(" + item.getPrice() + ")");
-            }
-            System.out.println();
-        }
+        return menu;
     }
 }
