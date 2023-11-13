@@ -2,7 +2,7 @@ package christmas.util;
 
 import java.time.LocalDate;
 
-public class EventPeriodChecker {
+public class EventPeriodValidator {
     private static final LocalDate EVENT_START_DATE = LocalDate.of(2023, 12, 1);
     private static final LocalDate EVENT_END_DATE = LocalDate.of(2023, 12, 31);
 

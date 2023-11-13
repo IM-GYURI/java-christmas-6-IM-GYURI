@@ -9,14 +9,19 @@ public class SpecialDiscountCalculator {
     private static final LocalDate EVENT_START_DATE = LocalDate.of(2023, 12, 1);
     private static final LocalDate EVENT_END_DATE = LocalDate.of(2023, 12, 31);
 
-    public static int calculateSpecialDiscount(LocalDate currentDate, int totalOrderAmount) {
-        if (isEventPeriod(currentDate) && STAR_DATES.contains(currentDate.getDayOfMonth())) {
+    public static int calculateSpecialDiscount(LocalDate currentDate) {
+        if (isEventPeriod(currentDate) && isStarDate(currentDate)) {
             return SPECIAL_DISCOUNT_AMOUNT;
         }
         return 0;
     }
 
-    private static boolean isEventPeriod(LocalDate currentDate) {
+    private static boolean isStarDate(LocalDate currentDate) {
+        return STAR_DATES.contains(currentDate.getDayOfMonth());
+    }
+
+    public static boolean isEventPeriod(LocalDate currentDate) {
         return !currentDate.isBefore(EVENT_START_DATE) && !currentDate.isAfter(EVENT_END_DATE);
     }
 }
+

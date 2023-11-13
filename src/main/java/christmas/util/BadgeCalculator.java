@@ -1,9 +1,9 @@
 package christmas.util;
 
 public class BadgeCalculator {
-    private static final int STAR_THRESHOLD = 5000;
-    private static final int TREE_THRESHOLD = 10000;
-    private static final int SANTA_THRESHOLD = 20000;
+    private static final int STAR_THRESHOLD = 5_000;
+    private static final int TREE_THRESHOLD = 10_000;
+    private static final int SANTA_THRESHOLD = 20_000;
 
     public static String calculateBadge(int totalBenefits) {
         String badge = "없음";

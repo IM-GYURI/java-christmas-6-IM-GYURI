@@ -1,26 +1,21 @@
 package christmas.util;
 
 import christmas.domain.Menu;
-import christmas.domain.MenuCategory;
-import christmas.domain.MenuItem;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 public class WeekdayDiscountCalculator {
+    private static final int DESSERT_DISCOUNT_PER_ITEM = 2023;
+
+    private interface MenuTypeChecker {
+        boolean check(String menuName);
+    }
+
     public static int calculateWeekdayDiscount(LocalDate currentDate, Map<String, Integer> orderMap) {
-        if (EventPeriodChecker.isEventPeriod(currentDate) && isWeekday(currentDate)) {
-            int dessertDiscountPerItem = 2023;
-
-            int dessertDiscount = orderMap.entrySet().stream()
-                    .filter(entry -> isDessertMenu(entry.getKey()))
-                    .mapToInt(entry -> entry.getValue() * dessertDiscountPerItem)
-                    .sum();
-
-            return dessertDiscount;
+        if (EventPeriodValidator.isEventPeriod(currentDate) && isWeekday(currentDate)) {
+            return calculateDiscount(orderMap, WeekdayDiscountCalculator::isDessertMenu, DESSERT_DISCOUNT_PER_ITEM);
         }
-
         return 0;
     }
 
@@ -30,14 +25,13 @@ public class WeekdayDiscountCalculator {
     }
 
     private static boolean isDessertMenu(String menuName) {
-        List<MenuCategory> menu = Menu.getMenu();
-        for (MenuCategory category : menu) {
-            for (MenuItem item : category.getItems()) {
-                if (item.getName().equals(menuName) && category.getCategoryName().equals("<디저트>")) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return Menu.isDessertMenuItem(menuName);
+    }
+
+    private static int calculateDiscount(Map<String, Integer> orderMap, MenuTypeChecker menuTypeChecker, int discountPerItem) {
+        return orderMap.entrySet().stream()
+                .filter(entry -> menuTypeChecker.check(entry.getKey()))
+                .mapToInt(entry -> entry.getValue() * discountPerItem)
+                .sum();
     }
 }

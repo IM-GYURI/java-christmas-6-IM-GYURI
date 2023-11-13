@@ -13,14 +13,21 @@ public class TotalOrderCalculator {
             String menuItemName = entry.getKey();
             int quantity = entry.getValue();
 
-            for (MenuCategory category : menu) {
-                for (MenuItem item : category.getItems()) {
-                    if (item.getName().equals(menuItemName)) {
-                        totalPrice += item.getPrice() * quantity;
-                    }
+            totalPrice += calculateItemTotalPrice(menuItemName, quantity, menu);
+        }
+
+        return totalPrice;
+    }
+
+    private static int calculateItemTotalPrice(String itemName, int quantity, List<MenuCategory> menu) {
+        for (MenuCategory category : menu) {
+            for (MenuItem item : category.getItems()) {
+                if (item.getName().equals(itemName)) {
+                    return item.getPrice() * quantity;
                 }
             }
         }
-        return totalPrice;
+        return 0;
     }
 }
+

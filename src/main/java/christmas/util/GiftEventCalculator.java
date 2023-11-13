@@ -2,7 +2,7 @@ package christmas.util;
 
 import java.util.Map;
 
-public class GiftEvent {
+public class GiftEventCalculator {
     private static final int THRESHOLD_AMOUNT = 120_000;
     private static final String CHAMPAGNE_MENU = "샴페인";
     private static final int GIFT_QUANTITY = 1;

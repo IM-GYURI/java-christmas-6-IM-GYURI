@@ -1,7 +1,6 @@
 package christmas.util;
 
-import java.util.HashMap;
-import java.util.Map;
+import christmas.domain.OrderDetail;
 
 public class OrderOrganizer {
     private static final String[] VALID_MENU_ITEMS
@@ -12,33 +11,31 @@ public class OrderOrganizer {
     public static void organizeOrder(String[] split, OrderDetail orderDetail) {
         for (String item : split) {
             String[] itemDetails = item.split("-");
-            if (itemDetails.length != 2) {
+            if (itemDetails.length != 2 || !validateAndAddToOrderMap(itemDetails, orderDetail)) {
                 handleInvalidInput(INVALID_ORDER_ERROR_MESSAGE);
                 return;
-            }
-
-            String menu = itemDetails[0].trim();
-            try {
-                int quantity = Integer.parseInt(itemDetails[1].trim());
-                validateAndAddToOrderMap(menu, quantity, orderDetail);
-            } catch (NumberFormatException e) {
-                handleInvalidInput(INVALID_ORDER_ERROR_MESSAGE);
-            } catch (IllegalArgumentException e) {
-                handleInvalidInput(INVALID_ORDER_ERROR_MESSAGE);
             }
         }
     }
 
-    private static void validateAndAddToOrderMap(String menu, int quantity, OrderDetail orderDetail) {
-        if (!isValidMenu(menu)) {
-            throw new IllegalArgumentException(INVALID_ORDER_ERROR_MESSAGE);
+    private static boolean validateAndAddToOrderMap(String[] itemDetails, OrderDetail orderDetail) {
+        String menu = itemDetails[0].trim();
+        String quantityString = itemDetails[1].trim();
+
+        try {
+            int quantity = parseQuantity(quantityString);
+            if (isValidMenu(menu) && quantity >= 1) {
+                orderDetail.addMenu(menu, quantity);
+                return true;
+            }
+        } catch (IllegalArgumentException ignored) {
         }
 
-        if (quantity < 1) {
-            throw new IllegalArgumentException(INVALID_ORDER_ERROR_MESSAGE);
-        }
+        return false;
+    }
 
-        orderDetail.addMenu(menu, quantity);
+    private static int parseQuantity(String quantityString) {
+        return Integer.parseInt(quantityString);
     }
 
     private static boolean isValidMenu(String menu) {
