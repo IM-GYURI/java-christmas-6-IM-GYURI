@@ -10,33 +10,24 @@ public class Menu {
     public static List<MenuCategory> createMenu() {
         List<MenuCategory> menu = new ArrayList<>();
 
-        MenuCategory appetizerCategory = new MenuCategory("<애피타이저>");
-        appetizerCategory.addItem("양송이수프", 6_000);
-        appetizerCategory.addItem("타파스", 5_500);
-        appetizerCategory.addItem("시저샐러드", 8_000);
-
-        MenuCategory mainCategory = new MenuCategory("<메인>");
-        mainCategory.addItem("티본스테이크", 55_000);
-        mainCategory.addItem("바비큐립", 54_000);
-        mainCategory.addItem("해산물파스타", 35_000);
-        mainCategory.addItem("크리스마스파스타", 25_000);
-
-        MenuCategory dessertCategory = new MenuCategory("<디저트>");
-        dessertCategory.addItem("초코케이크", 15_000);
-        dessertCategory.addItem("아이스크림", 5_000);
-
-        MenuCategory beverageCategory = new MenuCategory("<음료>");
-        beverageCategory.addItem("제로콜라", 3_000);
-        beverageCategory.addItem("레드와인", 60_000);
-        beverageCategory.addItem("샴페인", 25_000);
-
-        menu.add(appetizerCategory);
-        menu.add(mainCategory);
-        menu.add(dessertCategory);
-        menu.add(beverageCategory);
+        menu.add(createCategory("<애피타이저>", "양송이수프", 6_000, "타파스", 5_500, "시저샐러드", 8_000));
+        menu.add(createCategory("<메인>", "티본스테이크", 55_000, "바비큐립", 54_000, "해산물파스타", 35_000, "크리스마스파스타", 25_000));
+        menu.add(createCategory("<디저트>", "초코케이크", 15_000, "아이스크림", 5_000));
+        menu.add(createCategory("<음료>", "제로콜라", 3_000, "레드와인", 60_000, "샴페인", 25_000));
 
         return menu;
     }
+
+    private static MenuCategory createCategory(String categoryName, Object... items) {
+        MenuCategory category = new MenuCategory(categoryName);
+        for (int i = 0; i < items.length; i += 2) {
+            String itemName = (String) items[i];
+            int price = (int) items[i + 1];
+            category.addItem(itemName, price);
+        }
+        return category;
+    }
+
 
     public static List<MenuCategory> getMenu() {
         return MENU;
