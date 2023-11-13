@@ -1,8 +1,8 @@
 package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
+import christmas.util.OrderDetail;
 import christmas.util.OrderOrganizer;
-import java.util.HashMap;
 import java.util.Map;
 
 public class InputView {
@@ -46,10 +46,9 @@ public class InputView {
         String input = Console.readLine();
         String[] split = input.split(",");
 
-        Map<String, Integer> orderMap = new HashMap<>();
+        OrderDetail orderDetail = new OrderDetail();
+        OrderOrganizer.organizeOrder(split, orderDetail);
 
-        OrderOrganizer.organizeOrder(split, orderMap);
-
-        return orderMap;
+        return orderDetail.getOrderMap();
     }
 }
