@@ -5,7 +5,7 @@ import christmas.domain.MenuItem;
 import java.util.List;
 import java.util.Map;
 
-public class OrderCalculator {
+public class TotalOrderCalculator {
     public static int calculateTotalPrice(Map<String, Integer> orderMap, List<MenuCategory> menu) {
         int totalPrice = 0;
 
