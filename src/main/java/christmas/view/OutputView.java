@@ -27,12 +27,24 @@ public class OutputView {
         System.out.println();
     }
 
+    public static void printBeverageOnlyMessage(boolean containsOnlyBeverages) {
+        if (containsOnlyBeverages) {
+            System.out.println("음료만 주문 시, 주문할 수 없습니다.");
+            System.out.println();
+        }
+    }
+
     public void printTotalPrice(Map<String, Integer> orderMap, List<MenuCategory> menu) {
         int totalPrice = TotalOrderCalculator.calculateTotalPrice(orderMap, menu);
         DecimalFormat df = new DecimalFormat("###,###");
         String formatPrice = df.format(totalPrice);
         System.out.println("<할인 전 총주문 금액>");
         System.out.println(formatPrice + "원");
+        System.out.println();
+    }
+
+    public static void printEventApplicableMessage() {
+        System.out.println("총주문 금액 10,000원 이상부터 이벤트가 적용됩니다.");
         System.out.println();
     }
 
@@ -94,4 +106,5 @@ public class OutputView {
         System.out.println("<12월 이벤트 배지>");
         System.out.println(badge);
     }
+
 }
