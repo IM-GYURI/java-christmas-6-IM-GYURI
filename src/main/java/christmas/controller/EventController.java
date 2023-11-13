@@ -4,10 +4,12 @@ import static christmas.domain.Menu.createMenu;
 
 import christmas.domain.MenuCategory;
 import christmas.util.BadgeCalculator;
+import christmas.util.BeverageValidator;
 import christmas.util.DDayDiscountCalculator;
 import christmas.util.LocalDateConverter;
 import christmas.util.SpecialDiscountCalculator;
 import christmas.util.TotalOrderCalculator;
+import christmas.util.TotalPriceValidator;
 import christmas.util.WeekdayDiscountCalculator;
 import christmas.util.WeekendDiscountCalculator;
 import christmas.view.InputView;
@@ -41,10 +43,21 @@ public class EventController {
 
         outputView.printEventPreview(date);
         outputView.printMenu(orderMap);
+
+        boolean containsOnlyBeverages = BeverageValidator.containsOnlyBeverages(orderMap, menu);
+        outputView.printBeverageOnlyMessage(containsOnlyBeverages);
+
         outputView.printTotalPrice(orderMap, menu);
 
-        LocalDate localDate = LocalDateConverter.convertToLocalDate(date);
+        boolean isEventApplicable = TotalPriceValidator.isEventApplicable(totalPrice);
+        if (isEventApplicable) {
+            printEventDetails();
+        }
+        printEventNotApplicableDetails(isEventApplicable);
+    }
 
+    private void printEventDetails() {
+        LocalDate localDate = LocalDateConverter.convertToLocalDate(date);
         int christmasDiscount = DDayDiscountCalculator.calculateChristmasDiscount(date);
         int weekdayDiscount = WeekdayDiscountCalculator.calculateWeekdayDiscount(localDate, orderMap);
         int weekendDiscount = WeekendDiscountCalculator.calculateWeekendDiscount(localDate, orderMap);
@@ -52,7 +65,6 @@ public class EventController {
         int champagneGift = GiftEvent.calculateChampagneGift(totalPrice, orderMap);
 
         outputView.printGiftEvent(champagneGift);
-
         outputView.printBenefits(christmasDiscount, weekdayDiscount, weekendDiscount, specialDiscount, champagneGift);
 
         int totalBenefits = christmasDiscount + weekdayDiscount + weekendDiscount + specialDiscount + (CHAMPAGNE_PRICE * champagneGift);
@@ -65,4 +77,14 @@ public class EventController {
         outputView.printEventBadge(badge);
     }
 
+    private void printEventNotApplicableDetails(boolean isEventApplicable) {
+        if (!isEventApplicable) {
+            outputView.printEventApplicableMessage();
+            outputView.printGiftEvent(0);
+            outputView.printBenefits(0, 0, 0, 0, 0);
+            outputView.printTotalBenefits(0);
+            outputView.printDiscountedTotalPrice(totalPrice);
+            outputView.printEventBadge("없음");
+        }
+    }
 }
