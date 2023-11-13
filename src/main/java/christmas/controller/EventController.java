@@ -3,40 +3,31 @@ package christmas.controller;
 import static christmas.domain.Menu.createMenu;
 
 import christmas.domain.MenuCategory;
-import christmas.util.BadgeCalculator;
-import christmas.util.BeverageValidator;
-import christmas.util.DDayDiscountCalculator;
-import christmas.util.LocalDateConverter;
-import christmas.util.SpecialDiscountCalculator;
-import christmas.util.TotalOrderCalculator;
-import christmas.util.TotalPriceValidator;
-import christmas.util.WeekdayDiscountCalculator;
-import christmas.util.WeekendDiscountCalculator;
+import christmas.util.*;
 import christmas.view.InputView;
-import christmas.util.GiftEvent;
 import christmas.view.OutputView;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public class EventController {
     private static final int CHAMPAGNE_PRICE = 25_000;
-    private InputView inputView;
-    private OutputView outputView;
+    private boolean isEventApplicable;
     private int date;
     private int totalPrice;
     private String badge;
-    private TotalOrderCalculator orderCalculator;
     private List<MenuCategory> menu = createMenu();
     private Map<String, Integer> orderMap;
-
-    public EventController() {
-        this.inputView = new InputView();
-        this.outputView = new OutputView();
-        this.orderCalculator = new TotalOrderCalculator();
-    }
+    private InputView inputView = new InputView();
+    private OutputView outputView = new OutputView();
+    private TotalOrderCalculator orderCalculator = new TotalOrderCalculator();
 
     public void start() {
+        processOrder();
+    }
+
+    private void processOrder() {
         date = inputView.readDate();
         orderMap = inputView.readOrder();
         totalPrice = orderCalculator.calculateTotalPrice(orderMap, menu);
@@ -44,17 +35,37 @@ public class EventController {
         outputView.printEventPreview(date);
         outputView.printMenu(orderMap);
 
-        boolean containsOnlyBeverages = BeverageValidator.containsOnlyBeverages(orderMap, menu);
-        outputView.printBeverageOnlyMessage(containsOnlyBeverages);
+        if (isBeverageOnlyOrder()) {
+            outputView.printBeverageOnlyMessage();
+            return;
+        }
+
+        if (!isOrderWithinLimit()) {
+            OutputView.printMenuQuantityLimitExceeded();
+            return;
+        }
 
         outputView.printTotalPrice(orderMap, menu);
 
+        handleEventDetails();
+    }
+
+    private boolean isBeverageOnlyOrder() {
+        return BeverageValidator.containsOnlyBeverages(orderMap, menu);
+    }
+
+    private boolean isOrderWithinLimit() {
+        return MenuQuantityValidator.isOrderWithinLimit(orderMap);
+    }
+
+    private void handleEventDetails() {
         boolean isEventApplicable = TotalPriceValidator.isEventApplicable(totalPrice);
         if (isEventApplicable) {
             printEventDetails();
         }
         printEventNotApplicableDetails(isEventApplicable);
     }
+
 
     private void printEventDetails() {
         LocalDate localDate = LocalDateConverter.convertToLocalDate(date);
