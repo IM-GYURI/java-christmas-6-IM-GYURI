@@ -27,11 +27,12 @@ public class OutputView {
         System.out.println();
     }
 
-    public static void printBeverageOnlyMessage(boolean containsOnlyBeverages) {
-        if (containsOnlyBeverages) {
-            System.out.println("음료만 주문 시, 주문할 수 없습니다.");
-            System.out.println();
-        }
+    public static void printMenuQuantityLimitExceeded() {
+        System.out.println("메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다.");
+    }
+
+    public static void printBeverageOnlyMessage() {
+        System.out.println("음료만 주문 시, 주문할 수 없습니다.");
     }
 
     public void printTotalPrice(Map<String, Integer> orderMap, List<MenuCategory> menu) {
@@ -106,5 +107,4 @@ public class OutputView {
         System.out.println("<12월 이벤트 배지>");
         System.out.println(badge);
     }
-
 }
