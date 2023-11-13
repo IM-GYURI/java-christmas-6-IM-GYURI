@@ -9,7 +9,7 @@ import java.util.Map;
 public class OutputView {
 
     private static final int MINUS = -1;
-    private static final int CHAMPANGE_PRICE = 25_000;
+    private static final int CHAMPAGNE_PRICE = 25_000;
 
     public static void printEventPreview(int day) {
         System.out.println("12월 " + day + "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
@@ -37,25 +37,48 @@ public class OutputView {
     }
 
     public void printGiftEvent(int giftQuantity) {
-        if (giftQuantity > 0) {
-            System.out.println("<증정 메뉴>");
+        System.out.println("<증정 메뉴>");
+        if (giftQuantity == 1) {
             System.out.println("샴페인 " + giftQuantity + "개");
-            System.out.println();
         }
+        if (giftQuantity == 0) {
+            System.out.println("없음");
+        }
+        System.out.println();
     }
 
     public void printBenefits(int christmasDiscount, int weekdayDiscount, int weekendDiscount, int specialDiscount, int champagneGift) {
         System.out.println("<혜택 내역>");
-        printDiscount("크리스마스 디데이 할인: ", (MINUS*christmasDiscount));
-        printDiscount("평일 할인: ", (MINUS*weekdayDiscount));
-        printDiscount("주말 할인: ", (MINUS*weekendDiscount));
-        printDiscount("특별 할인: ", (MINUS*specialDiscount));
-        printDiscount("증정 이벤트: ", (MINUS*CHAMPANGE_PRICE*champagneGift));
+
+        if (christmasDiscount > 0) {
+            printDiscount("크리스마스 디데이 할인: ", (MINUS * christmasDiscount));
+        }
+
+        if (weekdayDiscount > 0) {
+            printDiscount("평일 할인: ", (MINUS * weekdayDiscount));
+        }
+
+        if (weekendDiscount > 0) {
+            printDiscount("주말 할인: ", (MINUS * weekendDiscount));
+        }
+
+        if (specialDiscount > 0) {
+            printDiscount("특별 할인: ", (MINUS * specialDiscount));
+        }
+
+        if (champagneGift > 0) {
+            printDiscount("증정 이벤트: ", (MINUS * CHAMPAGNE_PRICE * champagneGift));
+        }
+
+        if (christmasDiscount == 0 && weekdayDiscount == 0 && weekendDiscount == 0 && specialDiscount == 0 && champagneGift == 0) {
+            System.out.println("없음");
+        }
         System.out.println();
     }
 
-    private void printDiscount(String discountName, int discountAmount) {
-        System.out.printf("%s: %,d원\n", discountName, discountAmount);
+    private void printDiscount(String eventName, int discountAmount) {
+        String formattedAmount = String.format("%,d", discountAmount);
+        System.out.println(eventName + formattedAmount + "원");
     }
 
     public void printTotalBenefits(int totalBenefits) {
@@ -64,5 +87,11 @@ public class OutputView {
 
     public void printDiscountedTotalPrice(int discountedTotalPrice) {
         System.out.printf("<할인 후 예상 결제 금액>\n%,d원\n", discountedTotalPrice);
+        System.out.println();
+    }
+
+    public void printEventBadge(String badge) {
+        System.out.println("<12월 이벤트 배지>");
+        System.out.println(badge);
     }
 }
