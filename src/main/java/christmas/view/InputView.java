@@ -1,7 +1,7 @@
 package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
-import christmas.util.OrderDetail;
+import christmas.domain.OrderDetail;
 import christmas.util.OrderOrganizer;
 import java.util.Map;
 
@@ -26,13 +26,17 @@ public class InputView {
     private int convertInputWithDateValidation(String input, String errorMessage) {
         try {
             int inputConvert = Integer.parseInt(input);
-            if (isInDateRange(inputConvert)) {
-                return inputConvert;
-            }
+            validateDateRange(inputConvert, errorMessage);
+            return inputConvert;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(errorMessage);
         }
-        return 0;
+    }
+
+    private void validateDateRange(int input, String errorMessage) {
+        if (!isInDateRange(input)) {
+            throw new IllegalArgumentException(errorMessage);
+        }
     }
 
     private boolean isInDateRange(int input) {
