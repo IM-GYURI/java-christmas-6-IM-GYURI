@@ -23,4 +23,13 @@ public class MenuCategory {
     public List<MenuItem> getItems() {
         return items;
     }
+
+    public boolean containsMainMenu(String menuName) {
+        return items.stream()
+                .anyMatch(item -> item.getName().equals(menuName));
+    }
+
+    public boolean isBeverageCategory() {
+        return "<음료>".equals(categoryName);
+    }
 }

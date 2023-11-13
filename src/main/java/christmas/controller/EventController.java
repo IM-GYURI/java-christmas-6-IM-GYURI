@@ -83,8 +83,8 @@ public class EventController {
         int christmasDiscount = DDayDiscountCalculator.calculateChristmasDiscount(date);
         int weekdayDiscount = WeekdayDiscountCalculator.calculateWeekdayDiscount(localDate, orderMap);
         int weekendDiscount = WeekendDiscountCalculator.calculateWeekendDiscount(localDate, orderMap);
-        int specialDiscount = SpecialDiscountCalculator.calculateSpecialDiscount(localDate, totalPrice);
-        int champagneGift = GiftEvent.calculateChampagneGift(totalPrice, orderMap);
+        int specialDiscount = SpecialDiscountCalculator.calculateSpecialDiscount(localDate);
+        int champagneGift = GiftEventCalculator.calculateChampagneGift(totalPrice, orderMap);
 
         benefitsOutputView.printGiftEvent(champagneGift);
         benefitsOutputView.printBenefits(christmasDiscount, weekdayDiscount, weekendDiscount, specialDiscount, champagneGift);
