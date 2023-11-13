@@ -10,8 +10,6 @@ public class OrderOrganizer {
     private static final String INVALID_ORDER_ERROR_MESSAGE = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
 
     public static void organizeOrder(String[] split, OrderDetail orderDetail) {
-        Map<String, Integer> tempOrderMap = new HashMap<>();
-
         for (String item : split) {
             String[] itemDetails = item.split("-");
             if (itemDetails.length != 2) {
@@ -53,6 +51,6 @@ public class OrderOrganizer {
     }
 
     private static void handleInvalidInput(String errorMessage) {
-        System.out.println(errorMessage);
+        throw new IllegalArgumentException(errorMessage);
     }
 }
