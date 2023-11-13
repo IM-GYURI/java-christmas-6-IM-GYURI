@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
+    private static final List<MenuCategory> MENU = createMenu();
     public static List<MenuCategory> createMenu() {
         List<MenuCategory> menu = new ArrayList<>();
 
@@ -33,5 +34,9 @@ public class Menu {
         menu.add(beverageCategory);
 
         return menu;
+    }
+
+    public static List<MenuCategory> getMenu() {
+        return MENU;
     }
 }
