@@ -3,6 +3,7 @@ package christmas.controller;
 import static christmas.domain.Menu.createMenu;
 
 import christmas.domain.MenuCategory;
+import christmas.util.BadgeCalculator;
 import christmas.util.DDayDiscountCalculator;
 import christmas.util.LocalDateConverter;
 import christmas.util.SpecialDiscountCalculator;
@@ -17,11 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 public class EventController {
-    private static final int CHAMPANGE_PRICE = 25_000;
+    private static final int CHAMPAGNE_PRICE = 25_000;
     private InputView inputView;
     private OutputView outputView;
     private int date;
     private int totalPrice;
+    private String badge;
     private TotalOrderCalculator orderCalculator;
     private List<MenuCategory> menu = createMenu();
     private Map<String, Integer> orderMap;
@@ -53,12 +55,14 @@ public class EventController {
 
         outputView.printBenefits(christmasDiscount, weekdayDiscount, weekendDiscount, specialDiscount, champagneGift);
 
-        int totalBenefits = christmasDiscount + weekdayDiscount + weekendDiscount + specialDiscount + (CHAMPANGE_PRICE*champagneGift);
+        int totalBenefits = christmasDiscount + weekdayDiscount + weekendDiscount + specialDiscount + (CHAMPAGNE_PRICE * champagneGift);
         outputView.printTotalBenefits(totalBenefits);
 
-
-        int discountedTotalPrice = totalPrice - totalBenefits;
+        int discountedTotalPrice = totalPrice - (totalBenefits - (CHAMPAGNE_PRICE * champagneGift));
         outputView.printDiscountedTotalPrice(discountedTotalPrice);
+
+        badge = BadgeCalculator.calculateBadge(totalBenefits);
+        outputView.printEventBadge(badge);
     }
 
 }
