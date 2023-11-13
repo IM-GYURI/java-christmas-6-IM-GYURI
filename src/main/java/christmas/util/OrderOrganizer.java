@@ -8,7 +8,8 @@ public class OrderOrganizer {
             = {"양송이수프", "타파스", "시저샐러드", "티본스테이크", "바비큐립", "해산물파스타",
             "크리스마스파스타", "초코케이크", "아이스크림", "제로콜라", "레드와인", "샴페인"};
     private static final String INVALID_ORDER_ERROR_MESSAGE = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
-    public static void organizeOrder(String[] split, Map<String, Integer> orderMap) {
+
+    public static void organizeOrder(String[] split, OrderDetail orderDetail) {
         Map<String, Integer> tempOrderMap = new HashMap<>();
 
         for (String item : split) {
@@ -21,28 +22,16 @@ public class OrderOrganizer {
             String menu = itemDetails[0].trim();
             try {
                 int quantity = Integer.parseInt(itemDetails[1].trim());
-                validateAndAddToOrderMap(menu, quantity, orderMap);
+                validateAndAddToOrderMap(menu, quantity, orderDetail);
             } catch (NumberFormatException e) {
                 handleInvalidInput(INVALID_ORDER_ERROR_MESSAGE);
             } catch (IllegalArgumentException e) {
                 handleInvalidInput(INVALID_ORDER_ERROR_MESSAGE);
             }
         }
-
-        for (Map.Entry<String, Integer> entry : tempOrderMap.entrySet()) {
-            String menu = entry.getKey();
-            int quantity = entry.getValue();
-
-            if (orderMap.containsKey(menu)) {
-                handleInvalidInput("[ERROR] 중복된 메뉴가 있습니다: " + menu);
-                return;
-            }
-
-            orderMap.put(menu, quantity);
-        }
     }
 
-    private static void validateAndAddToOrderMap(String menu, int quantity, Map<String, Integer> orderMap) {
+    private static void validateAndAddToOrderMap(String menu, int quantity, OrderDetail orderDetail) {
         if (!isValidMenu(menu)) {
             throw new IllegalArgumentException(INVALID_ORDER_ERROR_MESSAGE);
         }
@@ -51,7 +40,7 @@ public class OrderOrganizer {
             throw new IllegalArgumentException(INVALID_ORDER_ERROR_MESSAGE);
         }
 
-        orderMap.put(menu, quantity);
+        orderDetail.addMenu(menu, quantity);
     }
 
     private static boolean isValidMenu(String menu) {
