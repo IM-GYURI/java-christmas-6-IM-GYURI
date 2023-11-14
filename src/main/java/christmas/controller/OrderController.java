@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public class EventController {
+public class OrderController {
     private static final int CHAMPAGNE_PRICE = 25_000;
     private boolean isEventApplicable;
     private int date;
