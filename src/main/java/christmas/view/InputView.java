@@ -40,7 +40,7 @@ public class InputView {
     }
 
     private boolean isInDateRange(int input) {
-        if(input >= FIRST_DATE && input <= FINAL_DATE) {
+        if (input >= FIRST_DATE && input <= FINAL_DATE) {
             return true;
         } throw new IllegalArgumentException(DATE_ERROR_MESSAGE);
     }
