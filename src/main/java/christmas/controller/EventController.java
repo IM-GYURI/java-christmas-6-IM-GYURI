@@ -20,13 +20,16 @@ public class EventController {
     private int date;
     private int totalPrice;
     private String badge;
+
     private List<MenuCategory> menu = createMenu();
     private Map<String, Integer> orderMap;
+
     private InputView inputView = new InputView();
     private MessageOutputView messageOutputView = new MessageOutputView();
     private EventOutputView eventOutputView = new EventOutputView();
     private OrderMenuOutputView orderMenuOutputView = new OrderMenuOutputView();
     private BenefitsOutputView benefitsOutputView = new BenefitsOutputView();
+
     private TotalOrderCalculator orderCalculator = new TotalOrderCalculator();
 
     public void start() {
