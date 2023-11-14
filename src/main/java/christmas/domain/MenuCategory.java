@@ -28,8 +28,4 @@ public class MenuCategory {
         return items.stream()
                 .anyMatch(item -> item.getName().equals(menuName));
     }
-
-    public boolean isBeverageCategory() {
-        return "<음료>".equals(categoryName);
-    }
 }
