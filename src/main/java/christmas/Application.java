@@ -1,7 +1,18 @@
 package christmas;
 
+import camp.nextstep.edu.missionutils.Console;
+import christmas.controller.OrderController;
+
 public class Application {
+    private static final String ERROR = "[ERROR] ";
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        try {
+            OrderController eventController = new OrderController();
+            eventController.start();
+        } catch (IllegalArgumentException e) {
+            System.out.println(ERROR  + e.getMessage());
+        } finally {
+            Console.close();
+        }
     }
 }
